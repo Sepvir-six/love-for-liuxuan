@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>刘璇，节日快乐！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root { --primary-color: #ff1493; }
+        body {
+            background: #0f0f0f;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Microsoft Yahei', sans-serif;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+        .heart {
+            position: relative;
+            width: 120px;
+            height: 110px;
+            animation: heartbeat 1.2s infinite;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 95px;
+            background: var(--primary-color);
+            border-radius: 60px 60px 0 0;
+        }
+        .heart::before {
+            left: 60px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+        .text-box {
+            position: absolute;
+            top: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        .name {
+            font-size: 2.8em;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: glow 2s ease-in-out infinite;
+        }
+        .greeting {
+            font-size: 1.8em;
+            color: #fff;
+            margin-top: 15px;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.25); }
+            30% { transform: scale(0.95); }
+            45% { transform: scale(1.15); }
+        }
+        @keyframes glow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: particleFly linear;
+        }
+        @keyframes particleFly {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heart"></div>
+        <div class="text-box">
+            <div class="name">刘璇</div>
+            <div class="greeting">每一天都是情人节 💖</div>
+        </div>
+    </div>
+
+    <script>
+        // 动态创建粒子特效
+        function createParticles(event) {
+            const colors = ['#ff1493', '#ff69b4', '#ff85c0'];
+            for(let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    left: ${event.clientX}px;
+                    top: ${event.clientY}px;
+                    width: ${Math.random()*8+2}px;
+                    height: ${Math.random()*8+2}px;
+                    background: ${colors[Math.floor(Math.random()*3)]};
+                    border-radius: 50%;
+                    animation-duration: ${Math.random()*1+0.5}s;
+                `;
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // 添加互动效果
+        document.addEventListener('click', (e) => {
+            createParticles(e);
+            document.querySelector('.heart').style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                document.querySelector('.heart').style.transform = '';
+            }, 200);
+        });
+
+        // 自动生成背景粒子
+        setInterval(() => {
+            createParticles({
+                clientX: Math.random() * window.innerWidth,
+                clientY: Math.random() * window.innerHeight
+            });
+        }, 300);
+    </script>
+</body>
+</html>
