@@ -2,136 +2,503 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>璇の3D幻想曲</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>星语心愿</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF4D8D',
+                        secondary: '#9D4EDD',
+                        accent: '#C77DFF',
+                        dark: '#1A003A',
+                        light: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        romantic: ['Dancing Script', 'cursive'],
+                        sans: ['Segoe UI', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow-glow {
+                text-shadow: 0 0 10px rgba(255, 77, 141, 0.8), 
+                             0 0 20px rgba(255, 77, 141, 0.6),
+                             0 0 30px rgba(255, 77, 141, 0.4);
+            }
+            .text-shadow-purple {
+                text-shadow: 0 0 10px rgba(157, 78, 221, 0.8), 
+                             0 0 20px rgba(157, 78, 221, 0.6),
+                             0 0 30px rgba(157, 78, 221, 0.4);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .animate-float-delay-1 {
+                animation: float 6s ease-in-out 1s infinite;
+            }
+            .animate-float-delay-2 {
+                animation: float 6s ease-in-out 2s infinite;
+            }
+            .animate-pulse-slow {
+                animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .animate-spin-slow {
+                animation: spin 20s linear infinite;
+            }
+            .animate-fade-in {
+                animation: fadeIn 1.5s ease-out forwards;
+            }
+            .animate-fade-out {
+                animation: fadeOut 1.5s ease-in forwards;
+            }
+            .animate-scale-in {
+                animation: scaleIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            .animate-rotate-y {
+                animation: rotateY 10s linear infinite;
+            }
         }
 
-        body {
-            background: #000;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
-            background: linear-gradient(45deg, #1a003a, #3a006a, #5a008a);
-            overflow: hidden;
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        /* 3D初音容器 */
-        .miku-container {
-            position: absolute;
-            left: -200px;
-            bottom: 10%;
-            width: 200px;
-            height: 300px;
-            transform-style: preserve-3d;
-            animation: mikuWalk 8s ease-in-out forwards;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 初音模型（简化2D插画风格） */
-        .miku {
-            width: 100%;
-            height: 100%;
-            background: url('https://via.placeholder.com/200x300/FF69B4/FFFFFF?text=2D+Miku') no-repeat; /* 可替换为真实初音插画 */
-            transform: rotateY(20deg);
-            box-shadow: 0 0 50px rgba(255, 105, 180, 0.3);
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
         }
 
-        /* 葱模型（3D旋转效果） */
-        .leek {
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes rotateY {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        /* 心形粒子 */
+        .heart {
             position: absolute;
             width: 20px;
-            height: 100px;
-            background: linear-gradient(#7CFB00, #00FF7F);
-            top: 40%;
-            left: 70%;
-            transform: rotateX(-45deg);
-            animation: throwLeek 2s 6s forwards;
+            height: 20px;
+            background-color: rgba(255, 77, 141, 0.8);
+            transform: rotate(45deg);
+            animation: heart-fall linear forwards;
         }
-
-        /* 目标文字（刘璇） */
-        .target-name {
+        
+        .heart:before,
+        .heart:after {
+            content: '';
             position: absolute;
-            top: 20%;
-            font-size: 4em;
-            color: white;
-            text-shadow: 0 0 20px var(--primary);
-            opacity: 0;
-            animation: appear 1s 8s forwards;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 77, 141, 0.8);
+            border-radius: 50%;
         }
-
-        /* 星空粒子 */
-        .star {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            background: white;
-            animation: twinkle 3s infinite;
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
         }
-
-        /* 动画关键帧 */
-        @keyframes mikuWalk {
-            0% { left: -200px; }
-            80% { left: calc(50% - 100px); } /* 走到屏幕中间 */
-            100% { opacity: 0; } /* 递完葱后消失 */
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
         }
-
-        @keyframes throwLeek {
-            0% { 
-                transform: rotateX(-45deg) translateZ(0); 
-                opacity: 1;
-            }
-            50% { 
-                transform: rotateX(360deg) translateZ(200px); 
+        
+        @keyframes heart-fall {
+            0% {
+                transform: translateY(-10vh) rotate(45deg);
                 opacity: 0.8;
             }
-            100% { 
-                top: 30%;
-                left: 50%;
-                transform: rotateX(720deg) translateZ(0); 
-                opacity: 1;
+            100% {
+                transform: translateY(110vh) rotate(405deg);
+                opacity: 0;
             }
         }
-
-        @keyframes appear {
-            100% { opacity: 1; }
+        
+        /* 3D文字容器 */
+        .text-3d-container {
+            perspective: 1000px;
         }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
+        
+        .text-3d {
+            transform-style: preserve-3d;
+        }
+        
+        /* 3D爱心容器 */
+        .heart-3d-container {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            perspective: 1000px;
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .heart-3d {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            animation: heart-rotate 8s infinite linear;
+        }
+        
+        .heart-3d-part {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,77,141,0.8) 0%, rgba(255,77,141,0.4) 70%);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        /* 爱心3D旋转动画 */
+        @keyframes heart-rotate {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        
+        /* 爱心粒子 */
+        .heart-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255, 77, 141, 0.8);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        /* 名字在爱心中央 */
+        .heart-name {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            z-index: 40;
+            opacity: 0;
         }
     </style>
 </head>
-<body>
-    <!-- 3D初音与葱 -->
-    <div class="miku-container">
-        <div class="miku"></div>
-        <div class="leek"></div>
+<body class="bg-gradient-to-br from-dark via-secondary/20 to-primary/20 min-h-screen overflow-hidden flex items-center justify-center relative">
+    <!-- 粒子背景容器 -->
+    <div id="particles-container" class="absolute inset-0 z-0 pointer-events-none"></div>
+    
+    <!-- 3D爱心容器 -->
+    <div id="heart-3d-container" class="heart-3d-container">
+        <div class="heart-3d">
+            <div class="heart-3d-part" style="transform: translateZ(-50px);"></div>
+            <div class="heart-3d-part" style="transform: translateZ(50px);"></div>
+            <div class="heart-3d-part" style="transform: rotateY(90deg) translateZ(-50px);"></div>
+            <div class="heart-3d-part" style="transform: rotateY(90deg) translateZ(50px);"></div>
+            <div class="heart-3d-part" style="transform: rotateX(90deg) translateZ(-50px);"></div>
+            <div class="heart-3d-part" style="transform: rotateX(90deg) translateZ(50px);"></div>
+        </div>
+        
+        <!-- 爱心中央的名字 -->
+        <div id="heart-name" class="heart-name">刘璇</div>
+        
+        <!-- 爱心周围的粒子 -->
+        <div id="heart-particles" class="absolute inset-0"></div>
+    </div>
+    
+    <!-- 主内容容器 -->
+    <div class="relative z-10 text-center px-4">
+        <!-- 3D旋转文字 -->
+        <div class="text-3d-container mb-12 animate-fade-in">
+            <div class="text-3d animate-rotate-y">
+                <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-light text-white text-shadow-glow">星语心愿</h1>
+                <h2 class="text-[clamp(1.5rem,4vw,2.5rem)] font-extralight text-white text-shadow-purple mt-4">点击许下心愿</h2>
+            </div>
+        </div>
+        
+        <!-- 交互元素 -->
+        <div class="relative mt-16 animate-fade-in" style="animation-delay: 1s">
+            <button id="interactive-button" class="bg-primary/20 hover:bg-primary/40 text-white font-light py-3 px-8 rounded-full border border-white/30 backdrop-blur-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 focus:outline-none">
+                <i class="fa fa-heart mr-2"></i>点击许下心愿
+            </button>
+        </div>
+        
+        <!-- 动态提示 -->
+        <div id="message" class="mt-8 text-white/80 text-[clamp(1rem,2vw,1.2rem)] opacity-0 transition-opacity duration-500"></div>
+    </div>
+    
+    <!-- 互动提示 -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-10 text-white/60 text-[clamp(0.8rem,2vw,1rem)] animate-fade-in-out">
+        <i class="fa fa-hand-pointer-o mr-1"></i>点击屏幕或按钮创造浪漫
     </div>
 
-    <!-- 目标文字（改为你的名字） -->
-    <div class="target-name">刘璇</div>
-
-    <!-- 动态星空（优化版，减少粒子数量） -->
     <script>
-        const createStar = () => {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDelay = Math.random() * 5 + 's';
-            document.body.appendChild(star);
-        };
-
-        // 生成50颗星星（原200颗导致卡顿，此处减少到50颗）
-        for (let i = 0; i < 50; i++) createStar();
+        // 创建背景心形粒子
+        function createHearts(count) {
+            const container = document.getElementById('particles-container');
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                
+                // 随机属性
+                const size = Math.random() * 10 + 10;
+                const x = Math.random() * 100;
+                const delay = Math.random() * 10;
+                const duration = Math.random() * 15 + 10;
+                
+                heart.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}%;
+                    top: -10%;
+                    opacity: ${Math.random() * 0.5 + 0.3};
+                    animation: heart-fall ${duration}s linear ${delay}s infinite;
+                `;
+                
+                // 随机颜色变化
+                const hue = 330 + Math.random() * 30; // 粉色到紫红色范围
+                const alpha = Math.random() * 0.5 + 0.3;
+                const color = `hsla(${hue}, 100%, 70%, ${alpha})`;
+                
+                heart.style.backgroundColor = color;
+                heart.querySelector(':before').style.backgroundColor = color;
+                heart.querySelector(':after').style.backgroundColor = color;
+                
+                container.appendChild(heart);
+            }
+        }
+        
+        // 点击屏幕创建心形粒子爆炸效果
+        function createHeartBurst(x, y) {
+            const container = document.getElementById('particles-container');
+            
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                
+                // 从点击位置发射
+                const rect = document.body.getBoundingClientRect();
+                const clickX = x;
+                const clickY = y;
+                
+                // 随机属性
+                const size = Math.random() * 8 + 8;
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const duration = Math.random() * 3 + 2;
+                
+                // 计算最终位置
+                const destX = clickX + Math.cos(angle) * distance;
+                const destY = clickY + Math.sin(angle) * distance;
+                
+                heart.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${clickX}px;
+                    top: ${clickY}px;
+                    transform: translate(-50%, -50%) rotate(45deg);
+                    animation: heart-explode ${duration}s forwards;
+                `;
+                
+                // 随机颜色变化
+                const hue = 330 + Math.random() * 30; // 粉色到紫红色范围
+                const alpha = Math.random() * 0.7 + 0.3;
+                const color = `hsla(${hue}, 100%, 70%, ${alpha})`;
+                
+                heart.style.backgroundColor = color;
+                heart.querySelector(':before').style.backgroundColor = color;
+                heart.querySelector(':after').style.backgroundColor = color;
+                
+                container.appendChild(heart);
+                
+                // 添加自定义动画
+                const style = document.createElement('style');
+                const animationName = `heart-explode-${Date.now()}-${i}`;
+                style.textContent = `
+                    @keyframes ${animationName} {
+                        0% {
+                            transform: translate(-50%, -50%) rotate(45deg);
+                            opacity: 0.8;
+                        }
+                        100% {
+                            transform: translate(calc(-50% + ${destX - clickX}px), calc(-50% + ${destY - clickY}px)) rotate(405deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // 动画结束后移除元素
+                setTimeout(() => {
+                    if (heart.parentNode === container) {
+                        container.removeChild(heart);
+                    }
+                    if (style.parentNode === document.head) {
+                        document.head.removeChild(style);
+                    }
+                }, duration * 1000);
+            }
+        }
+        
+        // 创建3D爱心粒子
+        function createHeart3D() {
+            const heartContainer = document.getElementById('heart-3d-container');
+            const heartName = document.getElementById('heart-name');
+            const particlesContainer = document.getElementById('heart-particles');
+            
+            // 显示爱心容器和名字
+            heartContainer.style.opacity = '1';
+            heartName.style.opacity = '1';
+            
+            // 清除之前的粒子
+            particlesContainer.innerHTML = '';
+            
+            // 创建新的粒子
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'heart-particle';
+                
+                // 计算粒子在爱心形状上的位置
+                const angle = Math.random() * Math.PI * 2;
+                const t = angle;
+                const scale = 100; // 缩放因子
+                
+                // 爱心参数方程
+                const x = 16 * Math.pow(Math.sin(t), 3) * scale;
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale;
+                
+                // 添加深度
+                const z = (Math.random() * 100 - 50); // -50 到 50 之间的随机深度
+                
+                // 计算旋转后的坐标（简单模拟3D效果）
+                const rotateY = Math.PI / 4; // Y轴旋转角度
+                const rotateX = Math.PI / 6; // X轴旋转角度
+                
+                const x2 = x * Math.cos(rotateY) - z * Math.sin(rotateY);
+                const y2 = y * Math.cos(rotateX) + z * Math.sin(rotateX);
+                const z2 = x * Math.sin(rotateY) + z * Math.cos(rotateY);
+                
+                // 计算缩放因子（离观察者越远越小）
+                const scaleFactor = 1 - Math.abs(z2) / 200;
+                
+                // 设置粒子位置
+                particle.style.left = `${x2 + 100}px`;
+                particle.style.top = `${y2 + 100}px`;
+                particle.style.width = `${8 * scaleFactor}px`;
+                particle.style.height = `${8 * scaleFactor}px`;
+                
+                // 随机颜色
+                const hue = 330 + Math.random() * 30;
+                const alpha = 0.5 + Math.random() * 0.5;
+                particle.style.backgroundColor = `hsla(${hue}, 100%, 70%, ${alpha})`;
+                
+                // 粒子动画
+                particle.style.animation = `fadeIn 0.5s forwards, float ${3 + Math.random() * 3}s ${Math.random() * 2}s infinite`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // 3秒后隐藏爱心
+            setTimeout(() => {
+                heartContainer.style.opacity = '0';
+                heartName.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // 显示随机浪漫消息
+        function showRandomMessage() {
+            const messages = [
+                "你是我生命中的阳光",
+                "我的心永远属于你",
+                "每一天爱你更多",
+                "你是我的全部世界",
+                "爱是永恒的，就像我对你的感情",
+                "在千万人之中，我一眼就认出了你",
+                "你是我最美的遇见"
+            ];
+            
+            const messageElement = document.getElementById('message');
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            
+            messageElement.textContent = messages[randomIndex];
+            messageElement.classList.remove('opacity-0');
+            messageElement.classList.add('opacity-100');
+            
+            // 3秒后隐藏消息
+            setTimeout(() => {
+                messageElement.classList.remove('opacity-100');
+                messageElement.classList.add('opacity-0');
+            }, 3000);
+        }
+        
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 根据屏幕尺寸调整粒子数量
+            const isMobile = window.innerWidth < 768;
+            const heartCount = isMobile ? 30 : 60;
+            
+            createHearts(heartCount);
+            
+            // 点击屏幕创建心形粒子和3D爱心
+            document.addEventListener('click', (e) => {
+                createHeartBurst(e.clientX, e.clientY);
+                createHeart3D();
+                showRandomMessage();
+            });
+            
+            // 触摸屏幕创建心形粒子（移动设备支持）
+            document.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                createHeartBurst(touch.clientX, touch.clientY);
+                createHeart3D();
+                showRandomMessage();
+            }, { passive: false });
+            
+            // 按钮交互
+            const button = document.getElementById('interactive-button');
+            button.addEventListener('click', () => {
+                // 添加按钮点击效果
+                button.classList.add('scale-95');
+                setTimeout(() => {
+                    button.classList.remove('scale-95');
+                }, 150);
+                
+                // 创建3D爱心
+                createHeart3D();
+                showRandomMessage();
+            });
+        });
+        
+        // 窗口大小变化时重新计算布局
+        window.addEventListener('resize', () => {
+            // 清空并重新生成粒子，保持适当密度
+            const container = document.getElementById('particles-container');
+            container.innerHTML = '';
+            
+            const isMobile = window.innerWidth < 768;
+            const heartCount = isMobile ? 30 : 60;
+            
+            createHearts(heartCount);
+        });
     </script>
 </body>
 </html>
