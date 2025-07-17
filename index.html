@@ -1,272 +1,490 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>刘璇情人节快乐呀</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#ff4d6d',
-            secondary: '#ffb3c1',
-            accent: '#ff8fa3',
-            light: '#fff0f3',
-            dark: '#590d22',
-          },
-          fontFamily: {
-            romantic: ['Dancing Script', 'cursive', 'system-ui'],
-            main: ['Inter', 'sans-serif'],
-          },
-        },
-      }
-    }
-  </script>
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .text-shadow {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      }
-      .animate-float {
-        animation: float 3s ease-in-out infinite;
-      }
-      .animate-float-delay-1 {
-        animation: float 3s ease-in-out 0.5s infinite;
-      }
-      .animate-float-delay-2 {
-        animation: float 3s ease-in-out 1s infinite;
-      }
-      .animate-fade-in-up {
-        animation: fadeInUp 1s ease-out forwards;
-      }
-      .animate-fade-in {
-        animation: fadeIn 1.5s ease-out forwards;
-      }
-      .animate-beat {
-        animation: beat 1.5s ease-in-out infinite;
-      }
-      .animate-fall {
-        animation: fall linear forwards;
-      }
-      .animate-pop {
-        animation: pop 1s ease-out forwards;
-      }
-      .bg-heart-pattern {
-        background-image: radial-gradient(circle, rgba(255,77,109,0.1) 1px, transparent 1px);
-        background-size: 20px 20px;
-      }
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(180deg); }
-      100% { transform: translateY(0px) rotate(360deg); }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @keyframes beat {
-      0% { transform: scale(1); }
-      14% { transform: scale(1.2); }
-      28% { transform: scale(1); }
-      42% { transform: scale(1.2); }
-      70% { transform: scale(1); }
-    }
-    
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-    
-    @keyframes pop {
-      0% { transform: scale(0) rotate(0deg); opacity: 0; }
-      50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
-      100% { transform: scale(0) rotate(360deg); opacity: 0; }
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>咳咳</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .editable:focus {
+                outline: 2px dashed theme('colors.primary');
+                outline-offset: 2px;
+            }
+            .toolbar-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-light to-secondary min-h-screen overflow-x-hidden">
-  <!-- 爱心和花瓣容器 -->
-  <div id="hearts-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-10"></div>
-  <div id="petals-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-10"></div>
-  <div id="click-elements-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-30"></div>
-  
-  <!-- 页面容器 -->
-  <div class="relative min-h-screen flex flex-col items-center justify-center p-4 z-20">
-    <!-- 主标题 -->
-    <div class="text-center mb-10 animate-fade-in-up" style="animation-delay: 0.5s">
-      <h1 class="font-romantic text-[clamp(2.5rem,8vw,5rem)] font-bold text-primary mb-2 text-shadow">
-        刘璇情人节快乐呀天天开心！
-      </h1>
-      <div class="flex justify-center">
-        <div class="w-20 h-2 bg-accent rounded-full mx-auto"></div>
-      </div>
-    </div>
-    
-    <!-- 中央装饰 -->
-    <div class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center mb-10 animate-fade-in" style="animation-delay: 1s">
-      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-      <div class="absolute inset-4 bg-primary/10 rounded-full blur-lg animate-pulse" style="animation-delay: 0.5s"></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-        <i class="fa-solid fa-heart text-primary text-[clamp(3rem,10vw,6rem)] animate-beat"></i>
-      </div>
-    </div>
-    
-    <!-- 星星装饰 -->
-    <div class="absolute top-1/4 left-1/4 text-primary/50 opacity-0 animate-float" style="animation-delay: 1.5s; animation-duration: 5s">
-      <i class="fa-solid fa-star text-2xl"></i>
-    </div>
-    <div class="absolute top-1/3 right-1/4 text-primary/50 opacity-0 animate-float-delay-1" style="animation-duration: 6s">
-      <i class="fa-solid fa-star text-xl"></i>
-    </div>
-    <div class="absolute bottom-1/3 left-1/3 text-primary/50 opacity-0 animate-float-delay-2" style="animation-duration: 4s">
-      <i class="fa-solid fa-star text-2xl"></i>
-    </div>
-    <div class="absolute bottom-1/4 right-1/3 text-primary/50 opacity-0 animate-float" style="animation-duration: 5.5s">
-      <i class="fa-solid fa-star text-xl"></i>
-    </div>
-  </div>
+<body class="font-inter bg-gray-50 text-dark min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-code text-primary text-xl"></i>
+                <h1 class="text-lg font-bold">我来个逗</h1>
+            </div>
 
-  <script>
-    // 创建花瓣飘落效果
-    function createPetals() {
-      const container = document.getElementById('petals-container');
-      const totalPetals = 50;
-      const colors = ['#ff4d6d', '#ff8fa3', '#ffb3c1', '#fb6f92'];
-      
-      for (let i = 0; i < totalPetals; i++) {
-        const petal = document.createElement('div');
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        
-        // 随机花瓣形状
-        const shapes = ['🌸', '💐', '🌺', '🌹', '🌼'];
-        const shape = shapes[Math.floor(Math.random() * shapes.length)];
-        
-        petal.innerHTML = shape;
-        petal.className = 'absolute text-[clamp(0.8rem,3vw,1.5rem)]';
-        petal.style.color = color;
-        petal.style.left = `${Math.random() * 100}vw`;
-        petal.style.top = `${-20 + Math.random() * 20}vh`;
-        petal.style.transform = `rotate(${Math.random() * 360}deg)`;
-        petal.style.opacity = Math.random() * 0.8 + 0.2;
-        petal.style.animation = `fall ${5 + Math.random() * 15}s linear forwards`;
-        petal.style.animationDelay = `${Math.random() * 10}s`;
-        
-        container.appendChild(petal);
-        
-        // 动画结束后移除元素
-        setTimeout(() => {
-          petal.remove();
-        }, 25000);
-      }
-    }
-    
-    // 创建爱心漂浮效果
-    function createHearts() {
-      const container = document.getElementById('hearts-container');
-      const totalHearts = 30;
-      
-      for (let i = 0; i < totalHearts; i++) {
-        const heart = document.createElement('div');
-        heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
-        heart.className = 'absolute text-primary/30';
-        heart.style.left = `${Math.random() * 100}vw`;
-        heart.style.top = `${Math.random() * 100}vh`;
-        heart.style.fontSize = `${5 + Math.random() * 15}px`;
-        heart.style.animation = `float ${3 + Math.random() * 7}s ease-in-out infinite`;
-        heart.style.animationDelay = `${Math.random() * 5}s`;
-        
-        container.appendChild(heart);
-      }
-    }
-    
-    // 显示星星
-    function showStars() {
-      const stars = document.querySelectorAll('.fa-star').forEach(star => {
-        star.parentElement.style.opacity = '1';
-      });
-    }
-    
-    // 点击生成元素
-    function createClickElements(x, y) {
-      const container = document.getElementById('click-elements-container');
-      const totalElements = 30;
-      const elements = ['❤️', '💖', '💗', '💓', '🌸', '🌼', '🐶', '🥬'];
-      
-      for (let i = 0; i < totalElements; i++) {
-        const element = document.createElement('div');
-        const content = elements[Math.floor(Math.random() * elements.length)];
-        
-        element.innerHTML = content;
-        element.className = 'absolute text-[clamp(1rem,4vw,2rem)] animate-pop';
-        element.style.left = `${x}px`;
-        element.style.top = `${y}px`;
-        element.style.transform = `translate(-50%, -50%) scale(0) rotate(0deg)`;
-        element.style.opacity = '0';
-        
-        // 随机偏移和旋转
-        const offsetX = (Math.random() - 0.5) * 200;
-        const offsetY = (Math.random() - 0.5) * 200;
-        const rotation = Math.random() * 360;
-        
-        setTimeout(() => {
-          element.style.transition = 'all 1s ease-out';
-          element.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) scale(1) rotate(${rotation}deg)`;
-          element.style.opacity = '1';
-        }, 10);
-        
-        container.appendChild(element);
-        
-        // 1秒后移除元素
-        setTimeout(() => {
-          element.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) scale(0) rotate(${rotation + 180}deg)`;
-          element.style.opacity = '0';
-          
-          setTimeout(() => {
-            element.remove();
-          }, 1000);
-        }, 1000);
-      }
-    }
-    
-    // 主函数
-    document.addEventListener('DOMContentLoaded', function() {
-      // 定时创建花瓣
-      createPetals();
-      setInterval(createPetals, 5000);
-      
-      // 创建爱心
-      createHearts();
-      
-      // 显示星星
-      setTimeout(showStars, 1500);
-      
-      // 点击事件
-      document.addEventListener('click', function(e) {
-        createClickElements(e.clientX, e.clientY);
-      });
-    });
-  </script>
+            <div class="flex items-center space-x-4">
+                <button id="save-btn" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-all flex items-center">
+                    <i class="fa fa-save mr-2"></i> 保存
+                </button>
+                <button id="edit-toggle" class="bg-white border border-gray-300 hover:bg-gray-50 text-dark px-4 py-2 rounded-lg transition-all flex items-center">
+                    <i class="fa fa-pencil mr-2"></i> <span id="edit-text">编辑</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 编辑工具栏 -->
+    <div id="toolbar" class="bg-white toolbar-shadow sticky top-16 z-30 hidden">
+        <div class="container mx-auto px-4 py-2 flex flex-wrap items-center gap-2">
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="bold">
+                <i class="fa fa-bold"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="italic">
+                <i class="fa fa-italic"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="underline">
+                <i class="fa fa-underline"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="strikethrough">
+                <i class="fa fa-strikethrough"></i>
+            </button>
+            <div class="h-6 w-px bg-gray-300 mx-1"></div>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="h1">
+                <i class="fa fa-header text-xl"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="h2">
+                <i class="fa fa-header text-lg"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="p">
+                <i class="fa fa-paragraph"></i>
+            </button>
+            <div class="h-6 w-px bg-gray-300 mx-1"></div>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="left">
+                <i class="fa fa-align-left"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="center">
+                <i class="fa fa-align-center"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="right">
+                <i class="fa fa-align-right"></i>
+            </button>
+            <button class="format-btn p-2 hover:bg-gray-100 rounded transition-colors" data-format="justify">
+                <i class="fa fa-align-justify"></i>
+            </button>
+            <div class="h-6 w-px bg-gray-300 mx-1"></div>
+            <button id="add-image" class="p-2 hover:bg-gray-100 rounded transition-colors">
+                <i class="fa fa-image"></i>
+            </button>
+            <button id="add-link" class="p-2 hover:bg-gray-100 rounded transition-colors">
+                <i class="fa fa-link"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow py-8">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <!-- 页面标题 -->
+            <div id="page-title" class="editable mb-8 text-center" contenteditable="false">
+                <h1 class="text-[clamp(1.8rem,4vw,3rem)] font-bold text-dark mb-4">欢迎使用可编辑网页</h1>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">这是一个完全可定制的网页，您可以编辑任何内容，添加图片、链接，甚至修改布局结构。</p>
+            </div>
+
+            <!-- 内容区域 -->
+            <div id="content-area" class="space-y-8">
+                <!-- 第一部分 -->
+                <section class="bg-white rounded-xl shadow-md p-6 editable" contenteditable="false">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">编辑功能介绍</h2>
+                    <p class="mb-4">点击右上角的"编辑"按钮，开启编辑模式。编辑模式下，您可以修改任何文本内容，并使用顶部的工具栏格式化文本。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-text-height text-primary text-xl"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">文本格式化</h3>
+                            <p class="text-gray-600">轻松设置字体样式、大小、颜色，添加标题、段落等。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-image text-primary text-xl"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">媒体管理</h3>
+                            <p class="text-gray-600">插入和管理图片、视频，调整大小和位置。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-code text-primary text-xl"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">布局设计</h3>
+                            <p class="text-gray-600">自定义页面布局，添加网格、卡片等元素。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第二部分 -->
+                <section class="bg-white rounded-xl shadow-md p-6 editable" contenteditable="false">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">如何使用</h2>
+                    <ol class="list-decimal pl-6 space-y-3 mb-6">
+                        <li><span class="font-medium">开启编辑模式：</span> 点击右上角的"编辑"按钮。</li>
+                        <li><span class="font-medium">选择内容：</span> 点击任何文本区域开始编辑。</li>
+                        <li><span class="font-medium">使用工具栏：</span> 顶部工具栏提供格式化选项。</li>
+                        <li><span class="font-medium">添加元素：</span> 使用工具栏中的图标添加图片、链接等。</li>
+                        <li><span class="font-medium">保存更改：</span> 完成编辑后，点击"保存"按钮保存您的更改。</li>
+                    </ol>
+                    <div class="bg-primary/5 border border-primary/20 p-4 rounded-lg">
+                        <p class="font-medium text-primary mb-2"><i class="fa fa-info-circle mr-2"></i> 提示</p>
+                        <p class="text-gray-600">当前版本仅在本地保存您的更改。刷新页面后，所有更改将被保留，但不会同步到其他设备。</p>
+                    </div>
+                </section>
+
+                <!-- 第三部分 - 可编辑示例 -->
+                <section class="bg-white rounded-xl shadow-md p-6 editable" contenteditable="false">
+                    <h2 class="text-2xl font-bold mb-4 text-primary">开始编辑您的内容</h2>
+                    <p class="mb-4">点击下面的区域，尝试编辑这段文本。您可以修改文字、添加图片，甚至调整整个布局。</p>
+
+                    <div class="editable-content mt-6 space-y-4">
+                        <div class="editable" contenteditable="false">
+                            <h3 class="text-xl font-bold mb-2">这是一个可编辑的标题</h3>
+                            <p>这是一段可编辑的段落文本。您可以修改此文本，添加新的段落，或更改现有内容的格式。</p>
+                        </div>
+
+                        <div class="editable" contenteditable="false">
+                            <h4 class="text-lg font-bold mb-2">子标题</h4>
+                            <p>您可以使用工具栏上的按钮来格式化文本，例如：</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>粗体文本</strong></li>
+                                <li><em>斜体文本</em></li>
+                                <li><u>下划线文本</u></li>
+                                <li><del>删除线文本</del></li>
+                            </ul>
+                        </div>
+
+                        <div class="editable" contenteditable="false">
+                            <p>您还可以添加图片：</p>
+                            <div class="mt-4 text-center">
+                                <img src="https://picsum.photos/800/400" alt="可编辑图片示例" class="rounded-lg shadow-md max-w-full h-auto editable-image">
+                                <p class="text-sm text-gray-500 mt-2">点击图片可修改图片URL</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">欢迎使用</p>
+            <p class="text-gray-400 text-sm">点击右上角的"编辑"按钮开始自定义此页面</p>
+        </div>
+    </footer>
+
+    <!-- 模态框 - 添加图片 -->
+    <div id="image-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">添加图片</h3>
+                <button id="close-image-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="image-url" class="block text-sm font-medium text-gray-700 mb-1">图片URL</label>
+                    <input type="text" id="image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="https://example.com/image.jpg">
+                </div>
+                <div>
+                    <label for="image-alt" class="block text-sm font-medium text-gray-700 mb-1">图片描述 (alt)</label>
+                    <input type="text" id="image-alt" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="描述图片内容">
+                </div>
+                <div class="flex justify-end">
+                    <button id="cancel-image" class="mr-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">取消</button>
+                    <button id="confirm-image" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">添加图片</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 - 添加链接 -->
+    <div id="link-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">添加链接</h3>
+                <button id="close-link-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="link-text" class="block text-sm font-medium text-gray-700 mb-1">链接文本</label>
+                    <input type="text" id="link-text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="显示的文本">
+                </div>
+                <div>
+                    <label for="link-url" class="block text-sm font-medium text-gray-700 mb-1">链接URL</label>
+                    <input type="text" id="link-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="https://example.com">
+                </div>
+                <div class="flex justify-end">
+                    <button id="cancel-link" class="mr-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">取消</button>
+                    <button id="confirm-link" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">添加链接</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 编辑模式切换
+        const editToggle = document.getElementById('edit-toggle');
+        const editText = document.getElementById('edit-text');
+        const toolbar = document.getElementById('toolbar');
+        const editableElements = document.querySelectorAll('[contenteditable]');
+        const saveBtn = document.getElementById('save-btn');
+        const pageTitle = document.getElementById('page-title');
+        const contentArea = document.getElementById('content-area');
+
+        let isEditing = false;
+
+        // 切换编辑模式
+        editToggle.addEventListener('click', () => {
+            isEditing = !isEditing;
+
+            if (isEditing) {
+                editText.textContent = '预览';
+                toolbar.classList.remove('hidden');
+                editableElements.forEach(el => {
+                    el.contentEditable = 'true';
+                    el.classList.add('cursor-text');
+                });
+
+                // 给图片添加编辑功能
+                document.querySelectorAll('.editable-image').forEach(img => {
+                    img.addEventListener('click', () => {
+                        promptImageEdit(img);
+                    });
+                });
+            } else {
+                editText.textContent = '编辑';
+                toolbar.classList.add('hidden');
+                editableElements.forEach(el => {
+                    el.contentEditable = 'false';
+                    el.classList.remove('cursor-text');
+                });
+            }
+        });
+
+        // 保存功能
+        saveBtn.addEventListener('click', () => {
+            if (isEditing) {
+                // 保存页面内容到本地存储
+                const pageContent = {
+                    title: pageTitle.innerHTML,
+                    content: contentArea.innerHTML
+                };
+
+                localStorage.setItem('editablePageContent', JSON.stringify(pageContent));
+
+                // 显示保存提示
+                showNotification('保存成功！');
+            }
+        });
+
+        // 加载保存的内容
+        function loadSavedContent() {
+            const savedContent = localStorage.getItem('editablePageContent');
+            if (savedContent) {
+                const { title, content } = JSON.parse(savedContent);
+                pageTitle.innerHTML = title;
+                contentArea.innerHTML = content;
+            }
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-300 translate-y-20 opacity-0 z-50';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // 显示通知
+            setTimeout(() => {
+                notification.classList.remove('translate-y-20', 'opacity-0');
+            }, 100);
+
+            // 3秒后隐藏通知
+            setTimeout(() => {
+                notification.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // 文本格式化
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const format = btn.getAttribute('data-format');
+
+                switch(format) {
+                    case 'h1':
+                    case 'h2':
+                    case 'p':
+                        document.execCommand('formatBlock', false, `<${format}>`);
+                        break;
+                    case 'left':
+                        document.execCommand('justifyLeft', false, null);
+                        break;
+                    case 'center':
+                        document.execCommand('justifyCenter', false, null);
+                        break;
+                    case 'right':
+                        document.execCommand('justifyRight', false, null);
+                        break;
+                    case 'justify':
+                        document.execCommand('justifyFull', false, null);
+                        break;
+                    default:
+                        document.execCommand(format, false, null);
+                }
+            });
+        });
+
+        // 添加图片模态框
+        const imageModal = document.getElementById('image-modal');
+        const closeImageModal = document.getElementById('close-image-modal');
+        const cancelImage = document.getElementById('cancel-image');
+        const confirmImage = document.getElementById('confirm-image');
+        const imageUrl = document.getElementById('image-url');
+        const imageAlt = document.getElementById('image-alt');
+        const addImageBtn = document.getElementById('add-image');
+
+        addImageBtn.addEventListener('click', () => {
+            imageUrl.value = '';
+            imageAlt.value = '';
+            imageModal.classList.remove('hidden');
+            imageUrl.focus();
+        });
+
+        function closeImageModalFunc() {
+            imageModal.classList.add('hidden');
+        }
+
+        closeImageModal.addEventListener('click', closeImageModalFunc);
+        cancelImage.addEventListener('click', closeImageModalFunc);
+
+        confirmImage.addEventListener('click', () => {
+            const url = imageUrl.value.trim();
+            const alt = imageAlt.value.trim();
+
+            if (url) {
+                document.execCommand('insertImage', false, url);
+
+                // 尝试设置alt属性
+                const images = document.querySelectorAll('img');
+                const lastImage = images[images.length - 1];
+                if (lastImage && !lastImage.getAttribute('alt')) {
+                    lastImage.setAttribute('alt', alt);
+                    lastImage.classList.add('editable-image', 'rounded-lg', 'shadow-md', 'max-w-full', 'h-auto', 'my-4');
+
+                    // 添加点击事件以便后续编辑
+                    lastImage.addEventListener('click', () => {
+                        promptImageEdit(lastImage);
+                    });
+                }
+
+                closeImageModalFunc();
+            }
+        });
+
+        // 图片编辑功能
+        function promptImageEdit(img) {
+            if (!isEditing) return;
+
+            const newUrl = prompt('编辑图片URL', img.src);
+            if (newUrl !== null && newUrl.trim() !== '') {
+                img.src = newUrl.trim();
+            }
+
+            const newAlt = prompt('编辑图片描述', img.alt);
+            if (newAlt !== null) {
+                img.alt = newAlt.trim();
+            }
+        }
+
+        // 添加链接模态框
+        const linkModal = document.getElementById('link-modal');
+        const closeLinkModal = document.getElementById('close-link-modal');
+        const cancelLink = document.getElementById('cancel-link');
+        const confirmLink = document.getElementById('confirm-link');
+        const linkText = document.getElementById('link-text');
+        const linkUrl = document.getElementById('link-url');
+        const addLinkBtn = document.getElementById('add-link');
+
+        addLinkBtn.addEventListener('click', () => {
+            // 尝试获取选中文本
+            const selection = window.getSelection();
+            if (selection.toString()) {
+                linkText.value = selection.toString();
+            } else {
+                linkText.value = '';
+            }
+
+            linkUrl.value = '';
+            linkModal.classList.remove('hidden');
+            linkUrl.focus();
+        });
+
+        function closeLinkModalFunc() {
+            linkModal.classList.add('hidden');
+        }
+
+        closeLinkModal.addEventListener('click', closeLinkModalFunc);
+        cancelLink.addEventListener('click', closeLinkModalFunc);
+
+        confirmLink.addEventListener('click', () => {
+            const text = linkText.value.trim();
+            const url = linkUrl.value.trim();
+
+            if (url) {
+                if (text) {
+                    // 如果有文本，插入新链接
+                    document.execCommand('insertHTML', false, `<a href="${url}" target="_blank">${text}</a>`);
+                } else {
+                    // 如果没有文本，尝试给选中的文本添加链接
+                    document.execCommand('createLink', false, url);
+                }
+
+                closeLinkModalFunc();
+            }
+        });
+
+        // 页面加载时加载保存的内容
+        window.addEventListener('load', loadSavedContent);
+    </script>
 </body>
 </html>
-    
